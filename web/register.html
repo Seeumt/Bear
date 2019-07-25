@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>register</title>
+    <style>
+
+    </style>
+    <script src="js1/jquery-3.3.1.min.js">
+        //在页面加载完成后为id为username的输入框绑定离焦事件
+        $(function () {
+            //给username绑定blur事件
+            $("#username").blur(function () {
+                //获取username文本输入框的值
+
+                //发送Ajax请求
+                //期望服务器响应回来的数据格式：{"userExist":true,"msg":"此用户名太个性了"}
+                //                             {"userExist":false,"msg":"完全ok"}
+                var username = $(this).val();
+                $.get("findTheUserServlet",{username:username},function (data) {
+                        //判断userExist这个键的值是否为true
+                    alert(data);
+                    var span = $("#s_username");
+                    if (data.userExist) {
+                        //用户名存在
+                        span.css("color","red");
+                        span.html(data.msg);
+                    } else {
+                        span.css("color","green");
+                        span.html(data.msg)
+                    }
+                },"json")
+            })
+        })
+
+
+
+    </script>
+</head>
+<body>
+<form>
+    <input type="text"  id="username" name="username" placeholder="请输入用户名">
+    <span id="s_username"></span>
+    <input type="password" name="password" placeholder="请输入密码">
+    <input type="submit" value="注册">
+
+</form>
+</body>
+</html>
